@@ -6,7 +6,6 @@ const logger = require('morgan');
 const helmet = require('helmet');
 const passport = require('passport');
 const session = require('express-session');
-const flash = require('connect-flash');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -37,10 +36,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport')(passport);
 
-//favicon
-const favicon = require('serve-favicon');
-app.use(favicon(path.join(__dirname, 'public',  'favicon.png')));
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -57,23 +52,13 @@ app.use(helmet.contentSecurityPolicy(
         }
     })
 );
-app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(flash());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/auth", authRouter);
 app.use('/market', marketRouter);
-
-// 플래시 메시지를 로컬 변수로 설정
-app.use((req, res, next) => {
-    res.locals.success_msg = req.flash('success_msg');
-    res.locals.error_msg = req.flash('error_msg');
-    res.locals.error = req.flash('error');
-    next();
-});
-
 
 app.use(function(req, res, next) {
   next(createError(404));

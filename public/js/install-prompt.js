@@ -2,7 +2,7 @@ let deferredPrompt;
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/public/js/service-worker.js')
+        navigator.serviceWorker.register('/js/service-worker.js')
             .then(registration => {
                 console.log('Service Worker registered:', registration);
             })
