@@ -10,6 +10,7 @@ router.get("/index", (req, res)=> {
         { text: "Sign In", url: "/auth/sign-in" },
         { text: "Sign Up", url: "/auth/sign-up" },
         { text: "Market List", url: "/market-list-example" },
+        { text: "map-example", url: "/market/map-example" },
         { text: "fuck you", url: "/whereAmI?" }
     ];
 
