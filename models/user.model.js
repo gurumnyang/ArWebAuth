@@ -25,6 +25,15 @@ const userSchema = new Schema({
 		enum: ['student', 'business','admin'],
 		default: 'student',
 	},
+	business: {
+		type: Schema.Types.ObjectId,
+		ref: 'market',
+	},
+	//학생의 경우 어떤 업체의 스탬프를 받았는지 기록
+	stamps: [{
+		type: Schema.Types.ObjectId,
+		ref: 'stamp',
+	}],
 	createdAt: {
 		type: Date,
 		default: Date.now,
