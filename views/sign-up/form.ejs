@@ -1,12 +1,13 @@
 <!doctype html>
-<html lang="kr" data-bs-theme="auto">
+<html lang="ko" data-bs-theme="auto">
 <head>
     <script src="/js/color-modes.js"></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+
+    <meta data-id="<%= userType %>" name="ut" content="<%= userType %>">
     <title>회원 가입</title>
 
 
@@ -22,7 +23,7 @@
 <body class="d-flex align-items-center py-4 bg-body-tertiary text-center">
 
 
-<%- include('./partials/color-mode') %>
+<%- include('../partials/color-mode') %>
 
 <style>
     main {
@@ -32,9 +33,11 @@
 </style>
 <main class="w-100 m-auto">
     <form class="form-signup border rounded p-4" id="signup-form">
-        <h1 class="h3 mb-3 fw-normal">회원 가입</h1>
+        <h4 class="h4 fw-normal mb-0 text-muted"><%= userType === 'student' ? '학생용' : '점주용' %></h4>
+        <h3 class="h3 fw-normal mb-3 ">회원 가입</h3>
         <hr class="mb-3" />
         <div class="text-start">
+
             <div class="mb-2">
                 <label for="inputUsername" class="form-label mb-0 fw-bold">닉네임</label>
                 <input
@@ -82,6 +85,58 @@
                 </div>
             </div>
 
+            <hr class="mb-2">
+            <% if (userType === 'student') { %>
+                <!--학생용 폼-->
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <label for="inputStudentId" class="form-label mb-0 fw-bold">학번</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="inputStudentId"
+                                aria-describedby="idHelp"
+                                spellcheck="false"
+                                autocomplete="false"
+                        />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputStudentName" class="form-label mb-0 fw-bold">이름</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="inputStudentName"
+                                aria-describedby="idHelp"
+                                spellcheck="false"
+                                autocomplete="false"
+                        />
+                    </div>
+                    <span id="student-helpline" class="form-text">
+                    인증 절차에서 사용됩니다. 학번과 실명을 정확히 입력해주세요!
+                    </span>
+                </div>
+            <% } %>
+
+
+            <% if(userType === 'business') {%>
+            <!--점주용 폼-->
+            <div class="mb-2">
+                <label for="inputAuthKey" class="form-label
+                mb-0 fw-bold">인증키</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="inputAuthKey"
+                        aria-describedby="idHelp"
+                        spellcheck="false"
+                        autocomplete="false"
+                />
+                <div id="idHelp" class="form-text"></div>
+                <span id="error-message-auth-key" class="text-danger form-text"></span>
+            </div>
+
+            <% } %>
+
             <div class="mb-3 form-check">
                 <input type="radio" class="form-check-input" id="privacyCheck" />
                 <label class="form-check-label" for="privacyCheck">
@@ -99,10 +154,10 @@
             회원 가입하기
         </button>
     </form>
-    <%- include('./partials/copyright.ejs') %>
+    <%- include('../partials/copyright.ejs') %>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@hapi/joi@17.1.1/dist/joi-browser.min.js"></script>
-<script src="/js/sign-up.js"></script>
+<script src="/js/sign-up/form.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>
