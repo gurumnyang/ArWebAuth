@@ -7,13 +7,39 @@ const userSchema = require("../utils/joiUserSchema");
 
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
+
 
 //GET request
 router.get("/sign-up", (req,res)=> {
-    res.render('sign-up');
+    res.redirect("/auth/sign-up/select");
 });
 
+router.get("/sign-up/select", (req,res)=> {
+    res.render('sign-up/select');
+});
+
+router.get('/sign-up/form', (req, res) => {
+    //ut = user type
+    let userType = req.query.ut;
+
+    if(!userType || (userType !== "student" && userType !== "business")) {
+        return res.redirect("/auth/sign-up/select");
+    }
+
+    res.render('sign-up/form', { userType });
+});
+
+router.get("/sign-up/activate", (req,res)=> {
+    if (!req.isAuthenticated()) {
+        return res.redirect("/auth/sign-in");
+    }
+    //if already activated
+    if (req.user.isActivated) {
+        return res.redirect("/home");
+    }
+
+    res.render('sign-up/activate');
+});
 router.get("/sign-in", (req,res)=> {
     //if already logged in
     if (req.isAuthenticated()) {
@@ -50,9 +76,20 @@ router.post("/sign-in", (req, res, next) => {
 
 router.post("/register", async (req,res)=>{
 
+    //userType: student business 둘다 아니면 빠꾸
+    const userType = req.body.userType;
+    if(userType !== "student" && userType !== "business") {
+        return res.status(400).json({ message: "잘못된 사용자 유형입니다." });
+    }
+
+
     let data = req.body.data;
 
-    const { error } = userSchema.registerSchema.validate(data);
+    let schema = (userType === "student") ? userSchema.studentSchema : userSchema.businessSchema;
+
+    //validate
+    let { error } = schema.validate(data);
+
     if(error) {
         return res.status(400).json({ message: error.details[0].message });
     }
@@ -62,23 +99,44 @@ router.post("/register", async (req,res)=>{
     if(user) {
         return res.status(409).json({ message: "이미 존재하는 아이디입니다." });
     }
+    const password = bcrypt.hashSync(data.password, 10);
+
     //trim
     data.id = data.id.trim();
-    data.name = data.name.trim();
+    data.username = data.username.trim();
 
-    const password = bcrypt.hashSync(data.password, 10);
-    User.create({
+    let userData = {
         id: data.id,
-        name: data.name,
-        password: password
-    })
-    .then(user=> {
-        res.status(201).json(user);
-    })
-    .catch(err=> {
+        username: data.username,
+        password: password,
+        role: (userType === "student") ? "student" : "business"
+    };
+
+    if (userType === "student") {
+        userData.studentId = data.studentId;
+        userData.name = data.name;
+    }
+
+    const newUser = new User(userData);
+
+    try {
+        //test
+        const savedUser = await newUser.save();
+        //로그인 시켜주기
+        req.login(user, (err) => {
+            if (err) {
+                return res.status(500).json({ message: err.message });
+            }
+            res.status(201).json({
+                message: "회원가입 성공",
+                isActivated: savedUser.isActivated,
+            });
+        });
+    } catch (err) {
         console.log(err);
         res.status(500).json({ error: err.message });
-    });
+    }
+
 });
 
 // Check for duplicate ID

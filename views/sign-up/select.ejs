@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko" data-bs-theme="auto">
+<head>
+    <script src="/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>회원 가입</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+
+</head>
+<body class="d-flex align-items-center bg-body-tertiary text-center">
+
+    <%- include('../partials/color-mode') %>
+
+    <style>
+        body {
+            min-height: 100vh;
+        }
+        main {
+            width: 100%;
+            max-width: 520px;
+        }
+    </style>
+    <main class="w-100 m-auto">
+        <div class="border rounded p-4">
+            <h1 class="h3 mb-3 fw-bold">사용자 선택</h1>
+            <hr class="mb-3"/>
+            <p class="fs-5 mb-4 text-muted">사용자별 맞춤 서비스를 제공합니다.</p>
+
+            <style>
+                .selector-card {
+                    width: 40%;
+                    max-width: 420px;
+                    border-radius: 0.5rem;
+                    padding:0;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    transition: transform 0.2s;
+                }
+            </style>
+
+            <div class="d-flex justify-content-center" >
+                <div class="card selector-card btn shadow me-4" id="student-button">
+                    <img class="card-img-top" src="" alt="학생 이미지">
+                    <div class="card-body border-top">
+                        <p class="card-text fs-5">학생</p>
+                    </div>
+                </div>
+                <div class="card selector-card btn shadow" id="business-button">
+                    <img class="card-img-top" src="" alt="점주 이미지">
+                    <div class="card-body border-top">
+                        <p class="card-text fs-5">점주</p>
+                    </div>
+                </div>
+                <script src="/js/sign-up/select.js"></script>
+            </div>
+        </div>
+        <%- include('../partials/copyright.ejs') %>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>
