@@ -123,7 +123,7 @@ router.post("/register", async (req,res)=>{
         //test
         const savedUser = await newUser.save();
         //로그인 시켜주기
-        req.login(user, (err) => {
+        req.login(newUser, (err) => {
             if (err) {
                 return res.status(500).json({ message: err.message });
             }
